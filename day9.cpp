@@ -50,7 +50,7 @@ int main()
 
 	auto map_cpy = map;
 
-	vector<int> basins;
+	int ans[3] = {0};
 	
 	for(auto i=1;i!=map.size()-1;++i) {
 		for(auto j = 1;j!=map[i].size()-1;++j) {
@@ -62,17 +62,21 @@ int main()
 			if(isMinimum(num,{l,r,d,u})) {
 				sum += num+1;
 				int b = basin(map_cpy,i,j);
-				basins.push_back(b);
+				if(b>=ans[2]) {
+					ans[0] = ans[1];
+					ans[1] = ans[2];
+					ans[2] = b;
+				} else if (ans[1] <= b) {
+					ans[0] = ans[1];
+					ans[1] = b;
+				} else if (ans[0] < b) {
+					ans[0] = b;
+				}
+
 			}
 		}
 	}
 
-	sort(basins.begin(), basins.end());
-
-
 	cout << sum << endl;
-	cout << basins.size() << endl;
-	for(auto i:basins) cout << i << ",";
-	cout << endl;
-
+	cout << ans[0]*ans[1]*ans[2] << endl;
 }
